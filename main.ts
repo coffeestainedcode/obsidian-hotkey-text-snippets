@@ -1,7 +1,13 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 interface MyPluginSettings {
-	mySetting: object;
+	mySetting: Object;
+}
+
+interface SavedData {
+    snippet: String,
+    modifiers: Array<String>,
+    key: String
 }
 
 const DEFAULT_SETTINGS: MyPluginSettings = {
@@ -17,7 +23,7 @@ export default class MyPlugin extends Plugin {
         this.addCommand({
             id: "shortcut-HTML-break",
             name: "Shortcut for <br>",
-            callback: () => this.shortcutHTMLbreak(),
+            callback: () => this.insertSnippet("<br>"),
             hotkeys: [
               {
                 modifiers: ["Mod"],
@@ -27,7 +33,7 @@ export default class MyPlugin extends Plugin {
         });
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		// this.addSettingTab(new SampleSettingTab(this.app, this));
+		this.addSettingTab(new SettingTab(this.app, this));
 
 		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
 		// Using this function will automatically remove the event listener when this plugin is disabled.
@@ -47,54 +53,41 @@ export default class MyPlugin extends Plugin {
 		await this.saveData(this.settings);
 	}
 
-    shortcutHTMLbreak(): void {
+    insertSnippet(input: String): void {
         let activeLeaf : any = this.app.workspace.activeLeaf;
         let editor = activeLeaf.view.sourceMode.cmEditor;
-        editor.replaceSelection(`<br>`);
+        editor.replaceSelection(input);
     }
 }
 
-// class SampleModal extends Modal {
-// 	constructor(app: App) {
-// 		super(app);
-// 	}
+class SettingTab extends PluginSettingTab {
+	plugin: MyPlugin;
 
-// 	onOpen() {
-// 		let {contentEl} = this;
-// 		contentEl.setText('Woah!');
-// 	}
+	constructor(app: App, plugin: MyPlugin) {
+		super(app, plugin);
+		this.plugin = plugin;
+	}
 
-// 	onClose() {
-// 		let {contentEl} = this;
-// 		contentEl.empty();
-// 	}
-// }
+	display(): void {
+		let {containerEl} = this;
 
-// class SampleSettingTab extends PluginSettingTab {
-// 	plugin: MyPlugin;
+		containerEl.empty();
 
-// 	constructor(app: App, plugin: MyPlugin) {
-// 		super(app, plugin);
-// 		this.plugin = plugin;
-// 	}
+		containerEl.createEl('h2', {text: 'Hotkey Bindings'});
+        containerEl.createEl('div', {text: 'Use CTRL, OPT, CMD, or SHF for modifiers'})
 
-// 	display(): void {
-// 		let {containerEl} = this;
-
-// 		containerEl.empty();
-
-// 		containerEl.createEl('h2', {text: 'Settings for my awesome plugin.'});
-
-// 		new Setting(containerEl)
-// 			.setName('Setting #1')
-// 			.setDesc('It\'s a secret')
-// 			.addText(text => text
-// 				.setPlaceholder('Enter your secret')
-// 				.setValue(this.plugin.settings.mySetting)
-// 				.onChange(async (value) => {
-// 					console.log('Secret: ' + value);
-// 					this.plugin.settings.mySetting = value;
-// 					await this.plugin.saveSettings();
-// 				}));
-// 	}
-// }
+        for (let index = 0; index < Object.keys(this.plugin.settings.mySetting).length + 1; index++) {
+            new Setting(containerEl)
+                .setName('Keybinding #' + (index + 1)) // keybinding count
+                // .setDesc('It\'s a secret') // what the snippet is
+                
+                .addText(text => text
+                    .setPlaceholder('Enter Keybindings and Snippet\nex) CTRL,SHIFT "Inserted text!"') 
+                    // .setValue(this.plugin.settings.mySetting) // current keeybinding
+                )
+                .addButton(click => click
+                    .setButtonText("test")
+                    )
+        }
+	}
+}
