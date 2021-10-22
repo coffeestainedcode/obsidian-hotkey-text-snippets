@@ -1,11 +1,11 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 interface MyPluginSettings {
-	mySetting: string;
+	mySetting: object;
 }
 
 const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default'
+	mySetting: {}
 }
 
 export default class MyPlugin extends Plugin {
@@ -24,19 +24,7 @@ export default class MyPlugin extends Plugin {
                 key: "1",
               },
             ],
-          });
-
-		// This creates an icon in the left ribbon.
-		// let ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
-		// 	// Called when the user clicks the icon.
-		// 	new Notice('This is a notice!');
-		// });
-		// Perform additional things with the ribbon
-		// ribbonIconEl.addClass('my-plugin-ribbon-class');
-
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-		// let statusBarItemEl = this.addStatusBarItem();
-		// statusBarItemEl.setText('Status Bar Text');
+        });
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		// this.addSettingTab(new SampleSettingTab(this.app, this));
@@ -62,10 +50,7 @@ export default class MyPlugin extends Plugin {
     shortcutHTMLbreak(): void {
         let activeLeaf : any = this.app.workspace.activeLeaf;
         let editor = activeLeaf.view.sourceMode.cmEditor;
-        let selectedText = editor.somethingSelected()
-            ? editor.getSelection()
-            : false;
-        editor.replaceSelection(`\!`);
+        editor.replaceSelection(`<br>`);
     }
 }
 
