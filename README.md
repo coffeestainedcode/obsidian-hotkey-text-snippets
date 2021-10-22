@@ -12,9 +12,11 @@ Key Binding|Snippet
 ---|---
 Cmd+1|\<br>
 
-Currently, I am not sure how to get this plugin in the "offical" Obsidian Community Plugins tab (nor is it anywhere close to being done), so you will need to download it manually.
+## Downloading
 
-### Manual Download:
+**Currently, I am not sure how to get this plugin in the "offical" Obsidian Community Plugins tab (nor is it anywhere close to being done), so you will need to download it manually.**
+
+### Manual Download and Install:
 1) Clone the repo into VAULT/.obsidian/plugins
 2) Go into the cloned hotkey-text-extender directory
 3) Run 'npm i' to download needed dependencies
