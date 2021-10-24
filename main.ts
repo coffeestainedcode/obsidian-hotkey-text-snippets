@@ -32,8 +32,23 @@ export default class MyPlugin extends Plugin {
             ],
         });
 
+        this.addCommand({
+            id: "shortcut-Recall-snippet",
+            name: "Shortcut for Recall block quote",
+            callback: () => this.insertSnippet(
+                "> ##### Recall:\n> "
+            ),
+            hotkeys: [
+              {
+                modifiers: ["Mod"],
+                key: "2",
+              },
+            ],
+        });
+
+
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SettingTab(this.app, this));
+		// this.addSettingTab(new SettingTab(this.app, this));
 
 		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
 		// Using this function will automatically remove the event listener when this plugin is disabled.
@@ -60,34 +75,34 @@ export default class MyPlugin extends Plugin {
     }
 }
 
-class SettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+// class SettingTab extends PluginSettingTab {
+// 	plugin: MyPlugin;
 
-	constructor(app: App, plugin: MyPlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
+// 	constructor(app: App, plugin: MyPlugin) {
+// 		super(app, plugin);
+// 		this.plugin = plugin;
+// 	}
 
-	display(): void {
-		let {containerEl} = this;
+// 	display(): void {
+// 		let {containerEl} = this;
 
-		containerEl.empty();
+// 		containerEl.empty();
 
-		containerEl.createEl('h2', {text: 'Hotkey Bindings'});
-        containerEl.createEl('div', {text: 'Use CTRL, OPT, CMD, or SHF for modifiers'})
+// 		containerEl.createEl('h2', {text: 'Hotkey Bindings'});
+//         containerEl.createEl('div', {text: 'Use CTRL, OPT, CMD, or SHF for modifiers'})
 
-        for (let index = 0; index < Object.keys(this.plugin.settings.mySetting).length + 1; index++) {
-            new Setting(containerEl)
-                .setName('Keybinding #' + (index + 1)) // keybinding count
-                // .setDesc('It\'s a secret') // what the snippet is
+//         for (let index = 0; index < Object.keys(this.plugin.settings.mySetting).length + 1; index++) {
+//             new Setting(containerEl)
+//                 .setName('Keybinding #' + (index + 1)) // keybinding count
+//                 // .setDesc('It\'s a secret') // what the snippet is
                 
-                .addText(text => text
-                    .setPlaceholder('Enter Keybindings and Snippet\nex) CTRL,SHIFT "Inserted text!"') 
-                    // .setValue(this.plugin.settings.mySetting) // current keeybinding
-                )
-                .addButton(click => click
-                    .setButtonText("test")
-                    )
-        }
-	}
-}
+//                 .addText(text => text
+//                     .setPlaceholder('Enter Keybindings and Snippet\nex) CTRL,SHIFT "Inserted text!"') 
+//                     // .setValue(this.plugin.settings.mySetting) // current keeybinding
+//                 )
+//                 .addButton(click => click
+//                     .setButtonText("test")
+//                     )
+//         }
+// 	}
+// }
